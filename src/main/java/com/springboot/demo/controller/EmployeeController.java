@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,15 +46,27 @@ public class EmployeeController {
 		modelResponse = employeeService.findAll();
 		employeeList = modelResponse.getEmployeeList();		
 		theModel.addAttribute("employees",employeeList);
-		modelAndView.setViewName("employeelist");
+		modelAndView.setViewName("employees/employeelist");
+		return modelAndView;
+	}
+	
+	@GetMapping("/showFormForAdd")
+	public ModelAndView showFormForAdd(Model theModel) {
+		ModelAndView modelAndView = new ModelAndView();
+		Employee theEmployee = new Employee();
+		EmployeeModelRequest modelRequest = new EmployeeModelRequest();
+		theModel.addAttribute("modelRequest",modelRequest);
+		modelAndView.setViewName("employees/employee-form");
 		return modelAndView;
 	}
 	
 	@PostMapping("/createemployee")
-	public EmployeeModelResponse addEmployee(@Valid @RequestBody EmployeeModelRequest modelRequest) {
+	public ModelAndView addEmployee(@ModelAttribute("modelRequest") EmployeeModelRequest modelRequest) {
 		EmployeeModelResponse modelResponse = new EmployeeModelResponse();
+		ModelAndView modelAndView = new ModelAndView();
 		modelResponse = employeeService.addEmployee(modelRequest);
-		return modelResponse;
+		modelAndView.setViewName("redirect:/getall");
+		return modelAndView;
 	}
 	
 	@PutMapping("/updateemployeebyid")
