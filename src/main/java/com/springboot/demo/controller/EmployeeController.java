@@ -90,12 +90,13 @@ public class EmployeeController {
 	}
 	
 	
-//	@DeleteMapping("/deleteemployee")
-//	public EmployeeModelResponse deleteEmployee(@Valid @RequestBody EmployeeModelRequest modelRequest) {
-//		EmployeeModelResponse modelResponse = new EmployeeModelResponse();
-//		modelResponse = employeeService.deleteEmployee(modelRequest);
-//		return modelResponse;
-//	}
+	@GetMapping("/deleteemployee")
+	public ModelAndView deleteEmployee(@ModelAttribute("modelRequest") EmployeeModelRequest modelRequest, Model theModel) {
+		ModelAndView modelAndView = new ModelAndView();
+		employeeService.deleteEmployee(modelRequest);
+		modelAndView.setViewName("redirect:/getall");
+		return modelAndView;
+	}
 	
 	
 	
