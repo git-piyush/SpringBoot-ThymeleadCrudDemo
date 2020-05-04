@@ -28,7 +28,6 @@ import com.springboot.demo.service.EmployeeService;
 @RestController
 @RequestMapping("/")
 public class EmployeeController {
-
 	private EmployeeService employeeService;
 	private List<Employee> employeeList;
 	
