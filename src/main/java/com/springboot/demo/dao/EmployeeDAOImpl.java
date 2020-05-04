@@ -43,7 +43,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		employee.setLastName(modelRequest.getLastName());
 		employee.setEmail(modelRequest.getEmail());
 		
-		entityManager.persist(employee);
+		entityManager.merge(employee);
 		
 		return modelResponse;
 	}
@@ -56,9 +56,9 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		employee = entityManager.find(Employee.class, modelRequest.getEmployeeId());
 	
 		if(employee!=null) {
-			employee.setFirstName(modelRequest.getNewFirstName());
-			employee.setLastName(modelRequest.getNewLastName());
-			employee.setEmail(modelRequest.getNewEmail());
+			employee.setFirstName(modelRequest.getFirstName());
+			employee.setLastName(modelRequest.getLastName());
+			employee.setEmail(modelRequest.getEmail());
 			employee = entityManager.merge(employee);
 			return modelResponse;
 		}
@@ -81,6 +81,13 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		}
 		modelResponse.setErrorDec("Employee removel failed");
 		return modelResponse;
+	}
+
+	@Override
+	@Transactional
+	public Employee findById(int employeeId) {
+		Employee employee = entityManager.find(Employee.class, employeeId);
+		return employee;
 	}
 
 }

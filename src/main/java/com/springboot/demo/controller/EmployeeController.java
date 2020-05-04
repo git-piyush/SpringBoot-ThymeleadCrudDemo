@@ -28,6 +28,7 @@ import com.springboot.demo.service.EmployeeService;
 @RestController
 @RequestMapping("/")
 public class EmployeeController {
+	int theEmployeId;
 	private EmployeeService employeeService;
 	private List<Employee> employeeList;
 	
@@ -68,19 +69,33 @@ public class EmployeeController {
 		return modelAndView;
 	}
 	
-	@PutMapping("/updateemployeebyid")
-	public EmployeeModelResponse updateEmployee(@Valid @RequestBody EmployeeModelRequest modelRequest) {
-		EmployeeModelResponse modelResponse = new EmployeeModelResponse();
-		modelResponse = employeeService.updateEmployee(modelRequest);
-		return modelResponse;
+	@GetMapping("/showFormForUpdate")
+	public ModelAndView showFormForUpdate(@ModelAttribute("modelRequest") EmployeeModelRequest modelRequest, Model theModel) {
+		ModelAndView modelAndView = new ModelAndView();
+		theEmployeId = modelRequest.getEmployeeId();
+		Employee employee = employeeService.findById(modelRequest.getEmployeeId());
+		System.out.println("s");
+		theModel.addAttribute("modelRequest",employee);
+		modelAndView.setViewName("employees/employee-update-form");
+		return modelAndView;
 	}
 	
-	@DeleteMapping("/deleteemployee")
-	public EmployeeModelResponse deleteEmployee(@Valid @RequestBody EmployeeModelRequest modelRequest) {
-		EmployeeModelResponse modelResponse = new EmployeeModelResponse();
-		modelResponse = employeeService.deleteEmployee(modelRequest);
-		return modelResponse;
+	@PostMapping("/updateemployeebyid")
+	public ModelAndView updateEmployee(@ModelAttribute("modelRequest") EmployeeModelRequest modelRequest, Model theModel) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelRequest.setEmployeeId(theEmployeId);
+		employeeService.updateEmployee(modelRequest);
+		modelAndView.setViewName("redirect:/getall");
+		return modelAndView;
 	}
+	
+	
+//	@DeleteMapping("/deleteemployee")
+//	public EmployeeModelResponse deleteEmployee(@Valid @RequestBody EmployeeModelRequest modelRequest) {
+//		EmployeeModelResponse modelResponse = new EmployeeModelResponse();
+//		modelResponse = employeeService.deleteEmployee(modelRequest);
+//		return modelResponse;
+//	}
 	
 	
 	

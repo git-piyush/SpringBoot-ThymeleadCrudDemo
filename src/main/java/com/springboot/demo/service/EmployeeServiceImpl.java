@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.springboot.demo.dao.EmployeeDAO;
+import com.springboot.demo.entity.Employee;
 import com.springboot.demo.modelrequest.EmployeeModelRequest;
 import com.springboot.demo.modelresponse.EmployeeModelResponse;
 
@@ -55,6 +56,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 		EmployeeModelResponse modelResponse = new EmployeeModelResponse();
 		modelResponse =	employeeDAO.deleteEmployee(modelRequest);
 		return modelResponse;
+	}
+
+	@Override
+	public Employee findById(int employeeId) {
+		Employee employee = employeeDAO.findById(employeeId);
+		return employee;
 	}
 
 }
